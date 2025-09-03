@@ -23,7 +23,7 @@ public class Fabricante {
 	private String fabricante;
 	
 	@OneToMany(mappedBy = "fabricante")
-	Set<Producto> produc;
+	private Set<Producto> productos;
 	
 	
 	public Fabricante () {}
@@ -32,6 +32,16 @@ public class Fabricante {
 		super();
 		this.idFabricante = id_fabricante;
 		this.fabricante = fabricante;
+	}
+	
+	
+
+	public Set<Producto> getProductos() {
+		return productos;
+	}
+
+	public void setProductos(Set<Producto> productos) {
+		this.productos = productos;
 	}
 
 	public int getId_fabricante() {
