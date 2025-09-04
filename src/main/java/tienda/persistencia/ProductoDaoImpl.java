@@ -30,7 +30,7 @@ public class ProductoDaoImpl implements ProductoDao {
 	@Override
 	public List<Producto> findByDescripcion(String descripcion) {
 		EntityManager em = emf.createEntityManager();
-		String Consultajpql="select p from Producto where p.descripcion like :desc";
+		String Consultajpql="select p from Producto p where p.producto like :desc";
 		
 		TypedQuery<Producto> busDesc =em.createQuery(Consultajpql,Producto.class);
 		busDesc.setParameter("desc", "%"+ descripcion + "%");
