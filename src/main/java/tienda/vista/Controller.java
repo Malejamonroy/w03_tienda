@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import tienda.modelo.Fabricante;
 import tienda.modelo.Producto;
 import tienda.negocio.Tienda;
@@ -69,6 +70,9 @@ public class Controller extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path =req.getPathInfo();
 		
+		//hacemos una sesion
+		HttpSession sesion = req.getSession();
+		
 		String descripcion;
 		switch (path) {
 		case "/listado_productos":
@@ -98,7 +102,7 @@ public class Controller extends HttpServlet {
 				&& isInteger(idFabStr) //si es entero el id de fabricante
 				&& (precio = Double.parseDouble(precioStr)) > 0  //que sea mayor que 0
 				&& (fab = neg.getFabricante(Integer.parseInt(idFabStr))) !=null) { //que no sea null
-				req.setAttribute("producto", descripcion);
+				sesion.setAttribute("producto", descripcion);
 				try {
 					neg.crearProducto(new Producto(descripcion,precio,fab));
 					//hacemos una redireccion a alta producto ok y reemplazamos la linea de abajo, responde a la peticion 
