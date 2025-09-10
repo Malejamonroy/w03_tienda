@@ -39,7 +39,8 @@ public class Controller extends HttpServlet {
 
 		
 		String path =req.getPathInfo();
-		
+		//lo creamos aqui porque lo vamos a usar en varios case y ya queda solo llamarlo 
+		Set<Fabricante> fabs;
 		switch (path) {
 		case "/informacion": 
 			req.setAttribute("origen", " El que te envio esto fui yo , el controlador!!!!!");
@@ -52,7 +53,7 @@ public class Controller extends HttpServlet {
 			req.getRequestDispatcher("/WEB-INF/vista/listado_productos.jsp").forward(req, resp);
 			break;
 		case "/alta_producto":
-			Set<Fabricante> fabs= neg.getFabricantes();
+			fabs= neg.getFabricantes();
 			req.setAttribute("fabs", fabs);
 			req.getRequestDispatcher("/WEB-INF/vista/alta_producto.jsp").forward(req, resp);
 			break;
@@ -61,6 +62,12 @@ public class Controller extends HttpServlet {
 			break;
 		case "/alta_producto_error":
 			req.getRequestDispatcher("/WEB-INF/vista/alta_producto_error.jsp").forward(req, resp);
+			break;
+		case "/productos_fabricante":
+			//cargar los fabricantes
+			fabs= neg.getFabricantes();
+			req.setAttribute("fabs", fabs);
+			req.getRequestDispatcher("/WEB-INF/vista/productos_fabricante.jsp").forward(req, resp);
 			break;
 			
 		}
@@ -122,6 +129,9 @@ public class Controller extends HttpServlet {
 				System.out.println("dio error");
 			}
 			
+			break;
+		case "/productos_fabricante":
+			//String idFabStr = req.getParameter("idFabricante");
 			break;
 		}
 	}

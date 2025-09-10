@@ -35,6 +35,12 @@ public interface Tienda {
 	Fabricante getFabricante (int idFabricante);
 	
 	/**
+	 * Devuelve todos los fabricantes que proporcionan productos. ordenados por su nombre
+	 * @return Set de fabricantes ordenados.
+	 */
+	Set<Fabricante> getFabricantesActivos();
+	
+	/**
 	 * Agrega un nuevo producto enn la persitencia
 	 * @param p producto a agregar
 	 */
