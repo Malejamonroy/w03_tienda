@@ -20,6 +20,7 @@ public class Controller extends HttpServlet {
 	
 	//1.para implemementar el negocio definirlo
 	private Tienda neg;
+	private String home;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -53,6 +54,12 @@ public class Controller extends HttpServlet {
 			Set<Fabricante> fabs= neg.getFabricantes();
 			req.setAttribute("fabs", fabs);
 			req.getRequestDispatcher("/WEB-INF/vista/alta_producto.jsp").forward(req, resp);
+			break;
+		case "/alta_producto_ok":
+			req.getRequestDispatcher("/WEB-INF/vista/alta_producto_ok.jsp").forward(req, resp);
+			break;
+		case "/alta_producto_error":
+			req.getRequestDispatcher("/WEB-INF/vista/alta_producto_error.jsp").forward(req, resp);
 			break;
 			
 		}
@@ -94,9 +101,13 @@ public class Controller extends HttpServlet {
 				req.setAttribute("producto", descripcion);
 				try {
 					neg.crearProducto(new Producto(descripcion,precio,fab));
-					req.getRequestDispatcher("/WEB-INF/vista/alta_producto_ok.jsp").forward(req, resp);
+					//hacemos una redireccion a alta producto ok y reemplazamos la linea de abajo, responde a la peticion 
+					resp.sendRedirect(home + "/alta_producto_ok");
+					//req.getRequestDispatcher("/WEB-INF/vista/alta_producto_ok.jsp").forward(req, resp);
+					//pero hay que darle entrada porque no se puede entrar directamnte a web-inf 
 				} catch (Exception e) {
-					req.getRequestDispatcher("/WEB-INF/vista/alta_producto_error.jsp").forward(req, resp);
+					resp.sendRedirect(home + "/alta_producto_error");
+					//req.getRequestDispatcher("/WEB-INF/vista/alta_producto_error.jsp").forward(req, resp);
 				}
 			
 			}else {
@@ -115,11 +126,12 @@ public class Controller extends HttpServlet {
 	public void init() throws ServletException {
 		//2.para instanciado el negocio
 		neg = new TiendaImple();
-		
-		
+			
 		ServletContext app = getServletContext();
 		
-		app.setAttribute("home", app.getContextPath() + "/tienda");
+		home = app.getContextPath() + "/tienda";
+		
+		app.setAttribute("home", home);
 		app.setAttribute("css", app.getContextPath() + "/css");
 	}
 	
