@@ -1,0 +1,29 @@
+@import url("general.css");
+
+#contPrincipal{
+	padding: 20px !important;	/* 	esto es para dar prioridad */
+}
+
+hr{
+	width:80%;
+}
+ul{
+	padding: 0px
+}
+li{
+	list-style: none;
+	margin:10px 0px;
+	text-align: center;
+}
+li:hover{
+	background-color: #358588
+	
+}
+a{
+	text-decoration: none;
+	color:#358588
+}
+a:hover{
+	color: white;
+	
+}

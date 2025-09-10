@@ -21,9 +21,9 @@ public class Fabricante {
 	@Column(name = "id_fabricante")
 	private int idFabricante;
 	private String fabricante;
-	
 	@OneToMany(mappedBy = "fabricante")
 	private Set<Producto> productos;
+
 	
 	
 	public Fabricante () {}
@@ -58,6 +58,14 @@ public class Fabricante {
 
 	public void setFabricante(String fabricante) {
 		this.fabricante = fabricante;
+	}
+
+	public int getIdFabricante() {
+		return idFabricante;
+	}
+
+	public void setIdFabricante(int idFabricante) {
+		this.idFabricante = idFabricante;
 	}
 
 	@Override

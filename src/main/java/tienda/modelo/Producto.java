@@ -20,13 +20,22 @@ public class Producto {
 	@Column(name = "id_producto")
 	private int idProducto;
 	private String producto;
-	private int precio;
+	private Double precio;
 	
 	@ManyToOne
 	@JoinColumn(name = "fk_fabricante")
 	private Fabricante fabricante;
 	
 	public Producto() {}
+	
+
+	public Producto(String producto, Double precio, Fabricante fabricante) {
+		super();
+		this.producto = producto;
+		this.precio = precio;
+		this.fabricante = fabricante;
+	}
+
 
 	public int getId_producto() {
 		return idProducto;
@@ -44,11 +53,11 @@ public class Producto {
 		this.producto = producto;
 	}
 
-	public int getPrecio() {
+	public Double getPrecio() {
 		return precio;
 	}
 
-	public void setPrecio(int precio) {
+	public void setPrecio(Double precio) {
 		this.precio = precio;
 	}
 
