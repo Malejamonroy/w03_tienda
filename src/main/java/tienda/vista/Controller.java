@@ -124,7 +124,7 @@ public class Controller extends HttpServlet {
 	}
 	
 	public boolean isEmpty(String param) {
-		return param == null && param.trim().length() == 0;
+		return param == null || param.trim().length() == 0;
 	}
 	
 	//estos son para convertir la cadena en un double y que no venga con errores, si todo esta ok es true si no da una exception pero como no me interesa es falso 
