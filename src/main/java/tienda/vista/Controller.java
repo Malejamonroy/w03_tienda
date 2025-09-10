@@ -37,8 +37,9 @@ public class Controller extends HttpServlet {
 		//System.out.println("req.getRequestURI()"+req.getRequestURI()); //toda la direccion que ha pedido (que uri me han pedido)/w03_tienda/tienda/algo
 		//System.out.println("req.getPathInfo()"+req.getPathInfo()); //aparece solo lo que nos han pedido  /algo
 
-		
 		String path =req.getPathInfo();
+		
+		HttpSession session = req.getSession();
 		//lo creamos aqui porque lo vamos a usar en varios case y ya queda solo llamarlo 
 		Set<Fabricante> fabs;
 		switch (path) {
@@ -47,6 +48,7 @@ public class Controller extends HttpServlet {
 			req.getRequestDispatcher("/WEB-INF/informacion").forward(req, resp);
 			break;
 		case "/menu_principal":
+			eliminarDatosSesion(session);
 			req.getRequestDispatcher("/WEB-INF/vista/menu_principal.jsp").forward(req, resp);
 			break;
 		case "/listado_productos":
@@ -64,8 +66,8 @@ public class Controller extends HttpServlet {
 			req.getRequestDispatcher("/WEB-INF/vista/alta_producto_error.jsp").forward(req, resp);
 			break;
 		case "/productos_fabricante":
-			//cargar los fabricantes
-			fabs= neg.getFabricantes();
+			//cargar los fabricantes activos
+			fabs= neg.getFabricantesActivos();
 			req.setAttribute("fabs", fabs);
 			req.getRequestDispatcher("/WEB-INF/vista/productos_fabricante.jsp").forward(req, resp);
 			break;
@@ -79,8 +81,10 @@ public class Controller extends HttpServlet {
 		
 		//hacemos una sesion
 		HttpSession sesion = req.getSession();
-		
+		//declaramos referencias
 		String descripcion;
+		String idFabStr;
+		Fabricante fab;;
 		switch (path) {
 		case "/listado_productos":
 			 descripcion = req.getParameter("descripcion");
@@ -98,9 +102,8 @@ public class Controller extends HttpServlet {
 		case "/alta_producto":
 			descripcion = req.getParameter("descripcion");
 			String precioStr = req.getParameter("precio");
-			String idFabStr = req.getParameter("idFabricante");
+			idFabStr = req.getParameter("idFabricante");
 			double precio;
-			Fabricante fab;
 			//comprobar que no este vacio 
 			if(!isEmpty(descripcion) //comprobar que no este vacio
 				&& !isEmpty(precioStr)//comprobar que no este vacio
@@ -131,7 +134,19 @@ public class Controller extends HttpServlet {
 			
 			break;
 		case "/productos_fabricante":
-			//String idFabStr = req.getParameter("idFabricante");
+			idFabStr = req.getParameter("idFabricante");
+			//hacemos el control
+			if(!isEmpty(idFabStr)
+				&& isInteger(idFabStr) //si es entero el id de fabricante
+				&& (fab = neg.getFabricante(Integer.parseInt(idFabStr))) !=null) {
+				//guardamos la sesion
+				sesion.setAttribute("fab", fab);
+				resp.sendRedirect(home + "/productos_fabricante");
+			}else {
+				//cerrar sesion!!
+				System.out.println(idFabStr);
+				System.out.println("dio error");
+			}
 			break;
 		}
 	}
@@ -149,12 +164,12 @@ public class Controller extends HttpServlet {
 		app.setAttribute("css", app.getContextPath() + "/css");
 	}
 	
-	public boolean isEmpty(String param) {
+	private boolean isEmpty(String param) {
 		return param == null || param.trim().length() == 0;
 	}
 	
 	//estos son para convertir la cadena en un double y que no venga con errores, si todo esta ok es true si no da una exception pero como no me interesa es falso 
-	public boolean isDouble(String num) {
+	private boolean isDouble(String num) {
 		try {
 			Double.parseDouble(num);
 			return true;
@@ -163,12 +178,19 @@ public class Controller extends HttpServlet {
 		}
 	}
 	//estos son para convertir la cadena en un entero y que no venga con errores, si todo esta ok es true si no da una exception pero como no me interesa es falso 
-	public boolean isInteger(String num) {
+	private boolean isInteger(String num) {
 		try {
 			Integer.parseInt(num);
 			return true;
 		} catch (NumberFormatException e) {
 			return false;
 		}
+	}
+	
+	private void eliminarDatosSesion(HttpSession sesion) {
+		sesion.removeAttribute("fab");
+		sesion.removeAttribute("fabs");
+		sesion.removeAttribute("prods");
+		
 	}
 }

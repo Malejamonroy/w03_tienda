@@ -9,6 +9,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Productos</title>
 <link rel="stylesheet" type="text/css" href="${css}/productos.css">
+<script type="text/javascript">
+window.onload = function(){
+	document.getElementById("idFabricante").addEventListener("change",
+			//colocamos una funcion anonima en vez de irla hacer afuera 
+		function(ev){
+			this.form.submit();
+		}		
+	);
+}
+</script>
 </head>
 <body>
 	<header class="cabecera">
@@ -17,10 +27,14 @@
 	
 	<div id="contPrincipal">
 		<form action="${home}/productos_fabricante" method= "post">
-			<select name="idFabricante">
-				<option hidden="hidden" value="">Seleccion fabricante</option>
+			<select id="idFabricante" name="idFabricante">
+				<c:if test="${empty fab}">
+					<option hidden="hidden" value="">Seleccion fabricante</option>
+				</c:if>
 				<c:forEach var="fabricante" items="${fabs}">
-					<option value="${fabricante.idFabricante}">${fabricante.fabricante}</option>
+					<option value="${fabricante.idFabricante}" 
+					${fabricante.idFabricante == fab.idFabricante ? "selected ='selected'" : ""} }
+					>${fabricante.fabricante}</option>
 				</c:forEach>
 			</select>
 		</form>
@@ -30,7 +44,6 @@
 				<tr>
 					<th>Descripcion</th>
 					<th>Precio</th>
-					<th>Fabricante </th>
 				</tr>
 			</thead>
 			<tbody>

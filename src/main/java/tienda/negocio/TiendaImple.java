@@ -37,10 +37,7 @@ public class TiendaImple implements Tienda {
 		return resu;
 	}
 	
-	@Override
-	public Fabricante getFabricante(int idFabricante) {
-		return fDao.findById(idFabricante);
-	}
+	
 	
 	@Override
 	public void crearProducto(Producto p) {
@@ -85,6 +82,18 @@ public class TiendaImple implements Tienda {
 		return resu;
 	}
 	
+	@Override
+	public Fabricante getFabricante(int idFabricante) {
+		return fDao.findById(idFabricante);
+	}
+	
+	@Override
+	public Set<Fabricante> getFabricantesActivos() {
+		Set<Fabricante> resu = new TreeSet<Fabricante>(getComparatorFabricanteDesc());
+		resu.addAll(fDao.findOnlyActive());
+		return resu;
+	}
+	
 	private Comparator<Fabricante> getComparatorFabricanteDesc(){
 		return new Comparator<Fabricante>() {
 
@@ -103,4 +112,6 @@ public class TiendaImple implements Tienda {
 			return col.compare(f1.getFabricante(),f2.getFabricante());
 		};
 	}
+
+	
 }
