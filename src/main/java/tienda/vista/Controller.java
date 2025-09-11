@@ -3,6 +3,8 @@ package tienda.vista;
 import java.io.IOException;
 import java.util.Set;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -70,6 +72,11 @@ public class Controller extends HttpServlet {
 			fabs= neg.getFabricantesActivos();
 			req.setAttribute("fabs", fabs);
 			req.getRequestDispatcher("/WEB-INF/vista/productos_fabricante.jsp").forward(req, resp);
+			break;
+		case "/productos_fabricante_json":
+			fabs= neg.getFabricantesActivos();
+			req.setAttribute("fabs", fabs);
+			req.getRequestDispatcher("/WEB-INF/vista/productos_fabricante_json.jsp").forward(req, resp);
 			break;
 			
 		}
@@ -147,9 +154,30 @@ public class Controller extends HttpServlet {
 				System.out.println(idFabStr);
 				System.out.println("dio error");
 			}
-			break;
+			break;	
+		case "/productos_fabricante_json_respuesta":
+			idFabStr = req.getParameter("idFabricante");
+			//lo validamos
+			if(!isEmpty(idFabStr)
+				&& isInteger(idFabStr) //si es entero el id de fabricante
+				&& (fab = neg.getFabricante(Integer.parseInt(idFabStr))) !=null) {
+				
+			//ya tenemos el fabricante y ahora lo transformamos en json
+				//hacemos el mapa
+				ObjectMapper mapper = new ObjectMapper();
+				String json = mapper.writeValueAsString(fab.getProductos());
+				//respondemos con el objeto resp
+				resp.getWriter().println(json);
+				
+			}else {
+				//cerrar sesion!!
+				System.out.println(idFabStr);
+				System.out.println("dio error");
+			}
+			break;	
 		}
 	}
+	
 	
 	@Override
 	public void init() throws ServletException {
