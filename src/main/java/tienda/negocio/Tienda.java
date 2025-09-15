@@ -4,6 +4,7 @@ import java.util.Set;
 
 import tienda.modelo.Fabricante;
 import tienda.modelo.Producto;
+import tienda.modelo.Usuario;
 
 public interface Tienda {
 	/*
@@ -46,4 +47,20 @@ public interface Tienda {
 	 */
 	
 	void crearProducto(Producto p);
+	
+	/**
+	 * Agrega un nuevo Usuario
+	 * @param u usuario a agregar
+	 * @return
+	 */
+	boolean crearUsuario(Usuario u);
+	
+	
+	/**
+	 * Valida las credenciales de un login
+	 * @param usr nombre de usuario
+	 * @param pws password
+	 * @return el usuario si las credenciales son correctas o null si no lo son
+	 */
+	Usuario validaUsuario(String usr, String pws);
 }

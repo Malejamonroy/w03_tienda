@@ -11,6 +11,7 @@
 		
 		<class>tienda.modelo.Producto</class>
 		<class>tienda.modelo.Fabricante</class>
+		<class>tienda.modelo.Usuario</class>
 		
 		
 		

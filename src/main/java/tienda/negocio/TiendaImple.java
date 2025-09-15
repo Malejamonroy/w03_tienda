@@ -8,19 +8,24 @@ import java.util.TreeSet;
 
 import tienda.modelo.Fabricante;
 import tienda.modelo.Producto;
+import tienda.modelo.Usuario;
 import tienda.persistencia.FabricanteDao;
 import tienda.persistencia.FabricanteDaoImpl;
 import tienda.persistencia.ProductoDao;
 import tienda.persistencia.ProductoDaoImpl;
+import tienda.persistencia.UsuarioDao;
+import tienda.persistencia.UsuarioDaoImpl;
 
 public class TiendaImple implements Tienda {
 	
 	private ProductoDao pDao;
 	private FabricanteDao fDao;
+	private UsuarioDao uDao;
 	
 	public TiendaImple() {
 		pDao = new ProductoDaoImpl();
 		fDao = new FabricanteDaoImpl();
+		uDao = new UsuarioDaoImpl();
 	}
 
 	@Override
@@ -111,6 +116,17 @@ public class TiendaImple implements Tienda {
 			Collator col = Collator.getInstance(new Locale("es"));
 			return col.compare(f1.getFabricante(),f2.getFabricante());
 		};
+	}
+
+	@Override
+	public boolean crearUsuario(Usuario u) {
+		return uDao.save(u);
+	}
+
+	@Override
+	public Usuario validaUsuario(String usr, String pws) {
+		// es para hacer el control regular y no saltarnos 
+		return uDao.valida(usr, pws);
 	}
 
 	
