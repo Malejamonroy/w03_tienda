@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import tienda.modelo.Fabricante;
 import tienda.modelo.Producto;
 import tienda.modelo.Usuario;
@@ -41,9 +42,13 @@ public class Controller extends HttpServlet {
 		//System.out.println("req.getRequestURI()"+req.getRequestURI()); //toda la direccion que ha pedido (que uri me han pedido)/w03_tienda/tienda/algo
 		//System.out.println("req.getPathInfo()"+req.getPathInfo()); //aparece solo lo que nos han pedido  /algo
 
+		
+		
 		String path =req.getPathInfo();
 		
 		HttpSession sesion = req.getSession();
+		req.setCharacterEncoding("UTF-8");
+		
 		if(sesionIniciada(sesion)) {
 			//lo creamos aqui porque lo vamos a usar en varios case y ya queda solo llamarlo 
 			Set<Fabricante> fabs;
@@ -99,6 +104,7 @@ public class Controller extends HttpServlet {
 				req.getRequestDispatcher("/WEB-INF/vista/registro_usuarios_respuesta.jsp").forward(req, resp);
 				break;
 			default:
+				resp.setContentType("text/html; charset=UTF-8");
 				login(req, resp);//si me entra por otra url me lleva al login 
 			}
 		}
